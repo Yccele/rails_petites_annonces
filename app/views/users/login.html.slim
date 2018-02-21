@@ -1,0 +1,24 @@
+/ <div><%= flash[:info] %></div>
+/ <h1>Connexion</h1>
+
+/ <%= form_tag "/users/login", method: "post" do %>
+/   <input type="text" name="name" placeholder="Name" />
+/   <input type="password" name="password" placeholder="Password" />
+/   <input type="submit" value="Se connecter" />
+/ <% end %>
+
+/ <br>
+
+/ <a href="/users/home">Retourner à l'accueil</a> 
+
+.flash = flash[:info] 
+h1 Connexion
+
+= simple_form_for @user, url: users_check_path do |f|
+  = f.input :name, placeholder: "name" 
+  = f.input :password, placeholder: "Password" 
+  = f.submit 'Se connecter'
+
+br
+
+= link_to "Retour à l'accueil", users_home_path

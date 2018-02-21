@@ -1,0 +1,14 @@
+h1 Liste des annonces :
+
+- @advertisements.each do |ad|
+  = link_to ad.title, advertisement_path(ad)
+  hr
+ul
+  li = link_to 'Poster une annonce', new_advertisement_path
+  - if current_user && current_user.role == 'admin' && @advertisements_no.where(is_validate: false) != []
+    li = link_to 'Annonces à vérifier', ad_verifies_path
+  / li = link_to "Retour à l'accueil", advertisements_path
+
+
+
+

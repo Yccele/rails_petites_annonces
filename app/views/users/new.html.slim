@@ -1,0 +1,20 @@
+/ <h1>Nouveau ici ?</h1>
+
+/ <%= form_tag "/users/new", method: "post" do %>
+/   <input type="text" name="name" placeholder="Name" />
+/   <input type="password" name="password" placeholder="Password" />
+/   <input type="submit" value="Créer" />
+/ <% end %>
+
+/ <br>
+
+/ <a href="/users/home">Retourner à l'accueil</a>
+
+
+
+= simple_form_for @user, url: users_new_path do  |f|
+  = f.input :name, placeholder: 'Commentaire'
+  = f.input :password
+  = f.submit  'Créer'
+
+= link_to "Retour à l'accueil", users_home_path

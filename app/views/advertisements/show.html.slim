@@ -1,0 +1,36 @@
+h1 Annonce id : #{@advertisement.id}
+
+p= @advertisement.content
+p= "Prix : #{@advertisement.price} €"
+p= "Postée par : #{@advertisement.user.name} "
+
+hr
+= link_to 'Retour aux annonces', advertisements_path
+/ a href=advertisements_path Retour aux annonces
+
+hr
+
+- if current_user
+  / = link_to 'Ajouter un commentaire', new_comment_path
+  h2 Ajoute un commentaire
+  = simple_form_for @comment, url: advertisement_comments_path(advertisement_id: @advertisement) do  |f|
+    = f.input :content, placeholder: 'Commentaire'
+    = f.submit  'Valider'
+
+- if @advertisement.comments.present?
+  h2 Commentaires
+
+  - @advertisement.comments.each do |comment|
+    p = "posté par : #{comment.user.name}"
+    p = comment.content
+    - if current_user && current_user.role == "admin"
+       = link_to 'Supprimer', advertisement_comment_path(comment, advertisement_id: @advertisement), method: :delete, data: { confirm: 'Are you sure?' }
+    p --------------
+
+  hr
+
+- if @current_user && @current_user.role == "admin"
+  = form_tag advertisement_path, method: :delete do
+    input type="submit" value="Supprimer l'annonce"
+
+
