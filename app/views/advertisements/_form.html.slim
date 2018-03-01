@@ -1,0 +1,49 @@
+= simple_form_for @advertisement, html: {class: 'form-horizontal'} do  |f|
+  .row
+    .col-sm-2
+      = f.label :title, class: 'control-label '
+    .col-sm-8
+      = f.input_field :title, class: 'form-control'
+  .row
+    .col-sm-2
+      = f.label :content, class: 'control-label'
+    .col-sm-8
+      = f.input_field :content, class: 'form-control', rows: '5'
+  .row
+    .col-sm-2
+      = f.label :price, class: 'control-label'
+    .col-sm-8
+      = f.input_field :price, class: 'form-control'
+  .row
+    .col-sm-2
+      = f.label :category_id, class: 'control-label'
+    .col-sm-8
+      = f.input_field :category_id, as: :select, collection: Category.all, class: 'form-control'
+  .row
+    .col-sm-2
+      = f.label :image, class: 'control-label'
+    .col-sm-4
+      - if @advertisement.image.present?
+        = image_tag(@advertisement.image.url(:med))
+      = f.input_field :image, as: :file
+  .row
+    .col-sm-2
+      b Address
+    .col-sm-8.address-form
+      = f.simple_fields_for :adress do |f_a|
+        = f_a.input :id, as: :hidden
+        .col-sm-4
+          = f_a.input_field :number, class: 'form-control', placeholder: 'Number'
+        .col-sm-8
+          = f_a.input_field :rue, class: 'form-control', placeholder: 'Rue'
+        .col-sm-6
+          = f_a.input_field :ville, class: 'form-control', placeholder: 'Ville'
+        .col-sm-6
+          = f_a.input_field :zip_code, class: 'form-control', placeholder: 'Code postal'
+        .col-md-12
+          = f_a.input_field :country, collection: ['Luxembourg', 'France', 'Belgique'], class: 'form-control', include_blank: false
+  = f.submit  'Valider', class: 'btn btn-primary'
+br
+hr
+br
+= link_to 'Retour aux annonces', advertisements_path

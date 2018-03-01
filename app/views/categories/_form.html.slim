@@ -1,0 +1,9 @@
+= simple_form_for @category do  |f|
+  .row
+    .col-sm-2
+      = f.label :name, class: 'control-label '
+    .col-sm-8
+      = f.input_field :name, class: 'form-control'
+  = f.submit 'Valider', class: 'btn btn-primary'
+hr
+= link_to 'Retour aux catégories', categories_path

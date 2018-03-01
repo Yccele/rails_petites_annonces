@@ -1,0 +1,9 @@
+- if @advertisement.comments.empty?
+  p Il n'y a pas de commentaires, soyez le premier
+- else
+  - @advertisement.comments.each do |comment|
+    p = "posté par : #{comment.user.name}"
+    p = comment.content
+    - if current_user && current_user.admin?
+       = link_to 'Supprimer', advertisement_comment_path(comment, advertisement_id: @advertisement), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+       hr

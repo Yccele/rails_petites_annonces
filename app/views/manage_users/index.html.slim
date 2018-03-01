@@ -1,0 +1,19 @@
+h1 Utilisateurs à vérifier
+
+- @users.each do |user|
+    = simple_form_for user, url: manage_user_path(user) do  |f|
+      .row
+        .col-sm-3
+          = user.name
+        .col-sm-3
+          = f.input :role_id, as: :select, collection: Role.all, include_blank: false, label: false
+        .col-sm-3
+          = f.submit 'Valider', class:'btn btn-primary'
+          /p Rôle :  #{collection_select(:user, :role_id, Role.all, :id, :name, prompt: true)}
+        .col-sm-3
+          = link_to 'Supprimer', manage_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class:'btn btn-danger'
+    / |&nbsp;/&nbsp;
+    / = link_to 'Valider', user_verify_path(user), method: :put
+    hr
+
+= link_to 'Retour aux annonces', advertisements_path

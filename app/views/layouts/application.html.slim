@@ -1,0 +1,22 @@
+html
+  head
+    title PetitesAnnonces
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ7tzo_uKWG4X_gEJaxK3SRVDbTK6bYHw&callback=initMap"
+
+  body
+    .container
+      .row
+        - if user_signed_in?
+          .name
+            p = current_user.name
+          li.deco.btn.btn-danger
+            = link_to('Logout', destroy_user_session_path, method: :delete)
+        - else
+          li.deco.btn.btn-success
+            = link_to('Login', new_user_session_path)
+        .flash = flash[:error]
+        .flash = flash[:notice]
+        = yield

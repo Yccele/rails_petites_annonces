@@ -1,36 +1,54 @@
-h1 Annonce id : #{@advertisement.id}
-
-p= @advertisement.content
-p= "Prix : #{@advertisement.price} €"
-p= "Postée par : #{@advertisement.user.name} "
+br
+= link_to 'Retour aux annonces', :root
+hr
+h2 Titre : #{@advertisement.title}
+= @advertisement.category.try(:name)
+.row
+  .col-sm-6.content
+    p= @advertisement.content
+    p= "Prix : #{@advertisement.price} €"
+    p= "Postée par : #{@advertisement.user.name} "
+  .col-sm-offset-2.col-sm-4
+    = image_tag @advertisement.image.url(:large), class: 'rounded'
+.row
+  .col-sm-2.adress
+    p = @advertisement.adress.number
+    p = @advertisement.adress.rue
+    p = @advertisement.adress.ville
+    p = @advertisement.adress.zip_code
+    p = @advertisement.adress.country
+  .col-sm-6
+    #map
 
 hr
-= link_to 'Retour aux annonces', advertisements_path
-/ a href=advertisements_path Retour aux annonces
+br
+- if user_signed_in?
+  = render 'comment_form_section'
+- else
+  span
+    = link_to('authentifier vous pour laisser un commentaire', new_user_session_path)
 
-hr
+.col-sm-10
+  h3 Commentaires
+  = render 'comments_section'
 
-- if current_user
-  / = link_to 'Ajouter un commentaire', new_comment_path
-  h2 Ajoute un commentaire
-  = simple_form_for @comment, url: advertisement_comments_path(advertisement_id: @advertisement) do  |f|
-    = f.input :content, placeholder: 'Commentaire'
-    = f.submit  'Valider'
-
-- if @advertisement.comments.present?
-  h2 Commentaires
-
-  - @advertisement.comments.each do |comment|
-    p = "posté par : #{comment.user.name}"
-    p = comment.content
-    - if current_user && current_user.role == "admin"
-       = link_to 'Supprimer', advertisement_comment_path(comment, advertisement_id: @advertisement), method: :delete, data: { confirm: 'Are you sure?' }
-    p --------------
-
-  hr
-
-- if @current_user && @current_user.role == "admin"
-  = form_tag advertisement_path, method: :delete do
-    input type="submit" value="Supprimer l'annonce"
-
-
+.col-sm-10
+  - if current_user && current_user.admin?
+    = link_to "Supprimer l'annonce", advertisement_path, method: :delete, data: {confirm: 'are you sure?'}
+coffee:
+  $(document).on 'turbolinks:load', ->
+    initMap()
+javascript:
+  function initMap() {
+    var geoloc = #{raw @geoloc_hash.to_json};
+    var uluru = geoloc;
+    console.log(uluru);
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: uluru
+    });
+    var marker = new google.maps.Marker({
+      position: uluru,
+      map: map
+    });
+  }

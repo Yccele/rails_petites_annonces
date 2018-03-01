@@ -1,0 +1,26 @@
+h3 = link_to "Mon espace", advertisements_path
+hr
+h1 Accueil
+hr
+h2 Filter
+
+= simple_form_for :search, url: :root, method: :get, html: {class: 'form-horizontal'} do |f|
+  .row
+    .col-sm-3
+      = f.label 'Recherche par catégorie'
+    .col-sm-4
+      = f.input_field :category_id, as: :select, collection: Category.all, class: 'form-control'
+  = f.submit 'Valider', class: 'btn btn-primary'
+
+
+table.table.table-hover
+  thead
+    td Photo
+    td Titre
+  tbody
+    - @advertisements.each do |ad|
+      tr
+        td.col-sm-4 = image_tag ad.image.url(:small), class: 'img-thumbnail'
+        td.col-sm-4 = link_to ad.title, advertisement_url(ad)
+
+

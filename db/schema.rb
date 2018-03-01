@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221103418) do
+ActiveRecord::Schema.define(version: 20180228104938) do
+
+  create_table "adresses", force: :cascade do |t|
+    t.integer "advertisement_id"
+    t.integer "number"
+    t.string "rue"
+    t.string "zip_code"
+    t.string "ville"
+    t.string "country"
+    t.float "latitude"
+    t.float "longitude"
+  end
 
   create_table "advertisements", force: :cascade do |t|
     t.integer "user_id"
@@ -20,12 +31,27 @@ ActiveRecord::Schema.define(version: 20180221103418) do
     t.text "title"
     t.integer "price"
     t.boolean "is_validate", default: false
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
+    t.integer "category_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "advertisement_id"
     t.integer "user_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -39,7 +65,7 @@ ActiveRecord::Schema.define(version: 20180221103418) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.string "role"
+    t.integer "role_id", default: 3
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

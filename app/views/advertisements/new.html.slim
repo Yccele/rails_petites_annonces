@@ -1,15 +1,3 @@
 div= flash[:error]
 h1 Nouvelle annonce
-
-= simple_form_for @advertisement do  |f| 
-  = f.input :title
-  = f.input :content
-  = f.input :price
-  = f.submit  'Valider'
-
-br
-hr
-br
-
-= link_to 'Retour aux annonces', advertisements_path
-/ a href=advertisements_path Retour aux annonces
+= render 'form'

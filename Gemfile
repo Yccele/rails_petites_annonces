@@ -28,6 +28,11 @@ gem 'jbuilder', '~> 2.5'
 gem 'simple_form'
 gem 'slim'
 gem 'devise'
+gem 'paperclip'
+gem "twitter-bootstrap-rails"
+gem 'geocoder'
+gem 'jquery-rails'
+gem 'filterrific'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

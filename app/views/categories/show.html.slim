@@ -1,0 +1,9 @@
+br
+= link_to 'Retour aux catégories', categories_path
+hr
+h2 Catégorie : #{@category.name}
+
+= link_to 'Modifier', edit_category_path
+| &nbsp;/&nbsp;
+= link_to 'Supprimer', category_path, method: :delete, data: { confirm: 'Are you sure?' }
+

@@ -1,10 +1,13 @@
-h1 Annonces à modifier
+h1 Annonces à vérifier
 
-- @advertisements.each do |ad|
-    p= ad.title
-    p= ad.content
-    = link_to 'Supprimer', ad_verify_path(ad), method: :delete, data: { confirm: 'Are you sure?' }
-    = link_to 'Valider', ad_verify_path(ad), method: :put
+- if @advertisements.present?
+  - @advertisements.each do |ad|
+      p= ad.title
+      p= ad.content
+      = link_to 'Supprimer', ad_verify_path(ad), method: :delete, data: { confirm: 'Are you sure?' }
+      = link_to 'Valider', ad_verify_path(ad), method: :put
+- else
+  p Il n'y a aucune annonce à vérifier.
 
 hr
 = link_to 'Retour aux annonces', advertisements_path

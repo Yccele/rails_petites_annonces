@@ -1,12 +1,10 @@
 class AdvertisementsController < ApplicationController
 
-  # Avant create, new et destroy : il faut s'authentifier
-  before_action :authenticate_user!, only: [:create, :new, :destroy]
+  # il faut s'authentifier, sauf pour le show
+  before_action :authenticate_user!, except: [:show]
 
   def index
-    # .validated : scope, voir model
-    @advertisements = Advertisement.validated
-    @advertisements_no = Advertisement.no_validated
+    @advertisements = current_user.advertisements
   end
 
   def show
@@ -14,13 +12,16 @@ class AdvertisementsController < ApplicationController
     if advertisement.present?
       # = if advertisement != []
       @advertisement = advertisement.first
+      @geoloc_hash = {lat: @advertisement.adress.latitude,
+                      lng: @advertisement.adress.longitude}
     else
-      redirect_to advertisements_path, flash: { error: "Annonce non trouvée !!" }
+      redirect_to advertisements_path, flash: { error: "Annonce non trouvée !" }
     end
   end
 
   def new
     @advertisement = Advertisement.new
+    @advertisement.build_adress
   end
 
   def create
@@ -39,6 +40,25 @@ class AdvertisementsController < ApplicationController
     redirect_to advertisements_path, flash: { notice: "Annonce supprimée avec succès" }
   end
 
+  def update
+    @advertisement = Advertisement.find(params[:id])
+    @advertisement.update_attributes(ad_params)
+    if @advertisement.save
+      redirect_to advertisement_path(@advertisement)
+    else
+      redirect_to edit_advertisement_path(@advertisement)
+    end
+  end
+
+  def edit
+    if advertisement.present?
+      # = if advertisement != []
+      @advertisement = advertisement.first
+    else
+      redirect_to advertisements_path, flash: { error: "Annonce non trouvée !!" }
+    end
+  end
+
   # Ici, on définit du code pour le réutiliser (DRY)
   # toutes les fonctions définies sous private ne pourront être associées à une route
   private
@@ -48,7 +68,7 @@ class AdvertisementsController < ApplicationController
   end
 
   def ad_params
-    params.require(:advertisement).permit(:content, :title, :price)
+    params.require(:advertisement).permit(:content, :title, :price, :image, :category_id, adress_attributes: [:id, :number, :rue, :zip_code, :ville, :country])
   end
 
   def comment_params
